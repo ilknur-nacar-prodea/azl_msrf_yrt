@@ -1,0 +1,147 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<Dialog title="{i18n>masrafCreate}" icon="sap-icon://create" state="Success">
+		<f:SimpleForm id="simpleFormMasrafEkle" binding="{detailView>/header}" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4"
+			labelSpanL="4" labelSpanM="4" labelSpanS="4" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+			columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="true">
+			<f:content>
+				<Label text="{i18n>Tarih}" labelFor="idTarih" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<!--<DatePicker id="idTarih" displayFormat="short" dateValue="{detailView>Tarih}"  >-->
+				<DatePicker id="idTarih" value="{path: 'detailView>Tarih', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd.MM.yyyy', strictParsing: true , UTC: true}}"   >
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</DatePicker>
+				<Label text="{i18n>FisTarih}" labelFor="idFisTarih" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<!--<DatePicker id="idFisTarih" displayFormat="short" dateValue="{detailView>FisTarihi}">-->
+				<DatePicker id="idFisTarih" change=".onFisTarihChange" value="{path: 'detailView>FisTarihi', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd.MM.yyyy', strictParsing: true , UTC: true}}" >
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</DatePicker>
+				<Label text="{i18n>FisNo}" labelFor="idFisNo" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<Input id="idFisNo" value="{detailView>FisNo}" maxLength="16">
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</Input>
+				<Label text="{i18n>FirmaAdi}" labelFor="idFirmaAdi" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<Input id="idFirmaAdi" value="{detailView>FirmaAdi}" maxLength="50">
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</Input>
+				<Label text="{i18n>MasrafTuru}" labelFor="idMasrafTuru" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<ComboBox id="idMasrafTuru" items="{ path: '/MasrafTuruSHSet'}" selectedKey="{detailView>Expcode}">
+					<core:Item key="{Expcode}" text="{Exptext}"/>
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</ComboBox>
+				<Label text="{i18n>OdemeSekli}" labelFor="idOdemeSekli" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<ComboBox id="idOdemeSekli" items="{ path: '/PaymentTypeSHSet'}" selectedKey="{detailView>OdemeSekli}">
+					<core:Item key="{OdemeSekli}" text="{OdemeSekliAck}"/>
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</ComboBox>
+				<Label text="{i18n>Tutar}" labelFor="idTutar" required="true">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<Input id="idTutar" liveChange=".onTutarChange" value="{path:'detailView>Wrbtr',type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'}}">
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</Input>
+				<Label text="{i18n>ParaBirimi}" labelFor="idParaBirimi" required="true" >
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<!--<ComboBox id="idParaBirimi" selectedKey="AZN">-->
+				<!--  <core:Item key="AZN" text="AZN"/>-->
+				<!--  <layoutData>-->
+				<!--    <layout:GridData span="L4 M4 S12"/>-->
+				<!--  </layoutData>-->
+				<!--</ComboBox>-->
+				<ComboBox id="idParaBirimi" change=".onParaBirimiChange" selectedKey="TRY" items="{ path: '/CurrencySHSet', sorter: { path: 'Waers' } }">
+					<core:Item key="{Waers}" text="{Waers}"/>
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</ComboBox>
+				<Label text="{i18n>AZN Tutar}" labelFor="idAZNTutar">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<Input id="idAZNTutar" editable="false" value="{path:'detailView>UpbTutar',type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'}}">
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</Input>
+				<Label text="{i18n>Departman}" labelFor="idDepartman" required="false" >
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<Select id="idDepartman"  forceSelection="true" selectedKey="{/DepartmentSHSet/0/Department}" items="{/DepartmentSHSet}" enabled="true"
+					editable="true" change="onDepartmentChange" showSecondaryValues="true" wrapItemsText="false">
+					<core:ListItem key="{Department}" text="{Department}" additionalText="{DepartmentDesc}"></core:ListItem>
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</Select>
+				<Label text="{i18n>Aciklama}" labelFor="idNote">
+					<layoutData>
+						<layout:GridData span="L2 M2 S12" linebreak="true"/>
+					</layoutData>
+				</Label>
+				<TextArea id="idNote" rows="2" value="{detailView>Aciklama}" maxLength="50" required="true">
+					<layoutData>
+						<layout:GridData span="L4 M4 S12"/>
+					</layoutData>
+				</TextArea>
+			</f:content>
+			<f:layoutData>
+				<FlexItemData shrinkFactor="0" backgroundDesign="Solid" styleClass="sapContrastPlus"/>
+			</f:layoutData>
+		</f:SimpleForm>
+		<UploadCollection id="fragUpload" class="sapUiTinyMarginBegin sapUiTinyMarginTop" maximumFilenameLength="100" maximumFileSize="100"
+			busy="{detailView>/screenOptions/busyUploadCollect}" multiple="true" sameFilenameAllowed="true" instantUpload="false" showSeparators="Inner"
+			change="onChange" fileDeleted="onFileDeleted" filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed"
+			typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"></UploadCollection>
+		<beginButton/>
+		<buttons>
+			<Button text="{i18n>CREATE}" press="onSendData"/>
+			<Button text="{i18n>CLOSE}" press="onCloseCreate"/>
+		</buttons>
+		<customHeader/>
+		<endButton/>
+	</Dialog>
+</core:FragmentDefinition>

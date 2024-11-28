@@ -1,0 +1,164 @@
+<mvc:View controllerName="prodea.ui.Z_MMASRAF01.controller.Detail" xmlns="sap.m" xmlns:semantic="sap.f.semantic" xmlns:core="sap.ui.core"
+  xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:mvc="sap.ui.core.mvc">
+  <semantic:SemanticPage id="detailPage" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}" showFooter="{ path: 'Statu', formatter: '.formatter.buttonVis' }">
+    <semantic:titleHeading>
+      <Title text="{Gjahr} {Monat}" level="H2"/>
+    </semantic:titleHeading>
+    <semantic:headerContent>
+      <VBox>
+        <HBox>
+          <ObjectAttribute title="{i18n>ToplamTutar}"/>
+          <!--<ObjectNumber id="objectHeaderNumber" number="{ path: 'Wrbtr', type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'} }"-->
+          <!--  unit="{Waers}" class="sapUiTinyMarginBegin"/>-->
+            <ObjectNumber id="objectHeaderNumber" number="{ path: 'Wrbtr', type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'} }"
+            class="sapUiTinyMarginBegin"/>
+            <ObjectAttribute id="idStatuAttr" title="{Statu}" visible="false"/>
+        </HBox>
+      </VBox>
+    </semantic:headerContent>
+    <semantic:content>
+      <IconTabBar id="idIconTabBarMulti" expanded="{device>/isNoPhone}">
+        <items>
+          <IconTabFilter icon="sap-icon://product" key="Masraflar" text="Masraflar">
+            <Table id="lineItemsList" width="auto" items="{docDetailModel>/tableData}" updateFinished=".onListUpdateFinished" delete="onDeleteItem" 
+              mode="{ path: 'Statu', formatter: '.formatter.modeTable' }"
+              selectionChange="onSelectionChange" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+               <!--mode="{ path: 'Statu', formatter: '.formatter.modeTable' }" -->
+               <!--mode="MultiSelect"-->
+               <!--delete="onDeleteItem"-->
+              <headerToolbar>
+                <Toolbar>
+                  <ToolbarSpacer/>
+                  <Button text="{i18n>SatirEkle}" press="onPressAddSatir"/>
+                </Toolbar>
+              </headerToolbar>
+              <columns>
+                <Column >
+                  <Text text="{i18n>Tarih}"/>
+                </Column>
+                <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline">
+                  <Text text="{i18n>FisNo}"/>
+                </Column>
+                <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline">
+                  <Text text="{i18n>FirmaAdi}"/>
+                </Column>
+                <Column demandPopin="true" hAlign="Begin" minScreenWidth="Tablet" popinDisplay="Inline">
+                  <Text text="{i18n>MasrafTuru}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" popinDisplay="Inline">
+                  <Text text="{i18n>Tutar}"/>
+                  <footer>
+                    <Text text="{ path: 'Wrbtr', type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'} }"/>
+                  </footer>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline" width="5%">
+                  <Text text="{i18n>Aciklama}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline" width="5%">
+						<Text text="{i18n>RedNedeni}"/>
+					</Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline" width="5%">
+                  <Text text="{i18n>Dokuman}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline" width="7%">
+                  <Text text="{i18n>MasrafForm}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+                  <Text text="Statü"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline" width="3%">
+                </Column>
+              </columns>
+              <items>
+                <ColumnListItem type="Active" press="onSelectionChange">
+                  <cells>
+                    <Text text="{path:'docDetailModel>Datum', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' , UTC: false }}"
+                      wrapping="false"/>
+                    <Text text="{docDetailModel>FisNo}" wrapping="false"/>
+                    <Text text="{docDetailModel>FirmaAdi}" wrapping="false"/>
+                    <ObjectIdentifier title="{docDetailModel>Expcode}" text="{docDetailModel>Exptext}"/>
+                    <ObjectNumber number="{ path: 'docDetailModel>Wrbtr', type: 'sap.ui.model.odata.type.Decimal', constraints: {scale: '2'} }" unit="{docDetailModel>Waers}"/>
+                    <!--  <Text text="{path:'Cdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' , UTC: false }}"/>-->
+                    <core:Icon src="sap-icon://discussion-2" press="onShowAciklama"/>
+                    <core:Icon src="sap-icon://discussion-2" press="onShowMuhRedNedeni"/>
+                    <core:Icon src="sap-icon://add-document" press="onShowDoc"/>
+                    <core:Icon src="sap-icon://pdf-attachment" press="onDownMasrafForm"/>
+                    <ObjectStatus text="{ path: 'docDetailModel>Statu', formatter: '.formatter.kalemStatu' }" state="{ path: 'docDetailModel>Statu', formatter: '.formatter.statuFormat' }"/>
+                    <core:Icon src="sap-icon://decline" press="onDeleteItem"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </IconTabFilter>
+          <IconTabFilter icon="sap-icon://detail-view" key="gecmis" text="Geçmiş">
+            <Table id="lineItemsListGecmis" width="auto" items="{docDetailModel>/tableData2}" updateFinished=".onListUpdateFinishedGecmis"
+              noDataText="{i18n>detailLineItemTableNoDataTextGecmis}" busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+              <columns>
+                <Column >
+                  <Text text="{i18n>Uname}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" popinDisplay="Inline">
+                  <Text text="{i18n>OldStatuText}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" popinDisplay="Inline">
+                  <Text text="{i18n>StatuText}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" popinDisplay="Inline">
+                  <Text text="{i18n>Brsed}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" popinDisplay="Inline">
+                  <Text text="{i18n>Brset}"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+                  <Text text="{i18n>RedNedeni}"/>
+                </Column>
+              </columns>
+              <items>
+                <ColumnListItem>
+                  <cells>
+                    <Text text="{docDetailModel>Uname}"/>
+                    <ObjectStatus text="{docDetailModel>StatuEskiText}" state="{ path: 'ocDetailModel>StatuEski', formatter: '.formatter.statuFormat' }"/>
+                    <ObjectStatus text="{docDetailModel>StatuText}" state="{ path: 'docDetailModel>Statu', formatter: '.formatter.statuFormat' }"/>
+                    <Text text="{path:'docDetailModel>Brsed', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' , UTC: false }}"/>
+                    <Text
+                      text="{path:'docDetailModel>Brset/ms', type:'sap.ui.model.type.Time', formatOptions: { source : { pattern : 'timestamp'}, pattern : 'HH:mm:ss' , UTC: false}}"/>
+                    <core:Icon src="sap-icon://discussion-2" press="onShowRedNedeni" visible="{= ${docDetailModel>RedNedeni} === '' ? false : true }"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </IconTabFilter>
+        </items>
+      </IconTabBar>
+    </semantic:content>
+    <!--Semantic ShareMenu Buttons-->
+    <!--<semantic:sendEmailAction>-->
+    <!--  <semantic:SendEmailAction id="shareEmail" press=".onSendEmailPress"/>-->
+    <!--</semantic:sendEmailAction>-->
+    <!--<semantic:shareInJamAction>-->
+    <!--  <semantic:ShareInJamAction id="shareInJam" visible="{FLP>/isShareInJamActive}" press=".onShareInJamPress"/>-->
+    <!--</semantic:shareInJamAction>-->
+    <!--<semantic:saveAsTileAction>-->
+    <!--  <footerbar:AddBookmarkButton id="shareTile" title="{detailView>/saveAsTileTitle}"/>-->
+    <!--</semantic:saveAsTileAction>-->
+    <semantic:closeAction>
+      <semantic:CloseAction id="closeColumn" press=".onCloseDetailPress"/>
+    </semantic:closeAction>
+    <semantic:footerCustomActions>
+      <Button id="idFormDownBtn" text="Masraf Formu İndir" icon="sap-icon://download" visible="{ path: 'Statu', formatter: '.formatter.buttonVis' }" press="onDown"/>
+      <Button id="idFormUpBtn" text="Masraf Formu Yükle" icon="sap-icon://upload" visible="{ path: 'Statu', formatter: '.formatter.buttonVis' }" press="onUp"/>
+      <Button id="onayaGonder" text="{i18n>SendApprover}" icon="sap-icon://paper-plane" press="onApp"/>
+    </semantic:footerCustomActions>
+    <semantic:fullScreenAction>
+      <semantic:FullScreenAction id="enterFullScreen"
+        visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press=".toggleFullScreen"/>
+    </semantic:fullScreenAction>
+    <semantic:exitFullScreenAction>
+      <semantic:ExitFullScreenAction id="exitFullScreen"
+        visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press=".toggleFullScreen"/>
+    </semantic:exitFullScreenAction>
+    <semantic:messagesIndicator>
+      <semantic:MessagesIndicator id="MessagesIndicator" enabled="true" visible="{= ${message>/}.length > 0 }" press="onMessagePopoverPress"/>
+    </semantic:messagesIndicator>
+  </semantic:SemanticPage>
+</mvc:View>

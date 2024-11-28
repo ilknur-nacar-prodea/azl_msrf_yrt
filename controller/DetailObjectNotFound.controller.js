@@ -1,0 +1,1 @@
+sap.ui.define(["./BaseController"],function(e){"use strict";return e.extend("prodea.ui.Z_MMASRAF01.controller.DetailObjectNotFound",{})});
